@@ -1,0 +1,1067 @@
+<?xml version="1.0"?>
+<robot name="doublearm" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Defining the colors used in this robot -->
+    <material name="Black">
+        <color rgba="0 0 0 1"/>
+    </material>
+
+    <material name="White">
+        <color rgba="1 1 1 1"/>
+    </material>
+
+    <material name="Blue">
+        <color rgba="0 0 1 1"/>
+    </material>
+
+    <material name="Red">
+        <color rgba="1 0 0 1"/>
+    </material>
+
+    <!-- Constants -->
+    <xacro:property name="M_PI" value="3.14159"/>
+
+    <!-- link1 properties -->
+    <xacro:property name="link1_width" value="0.05" />
+    <xacro:property name="link1_len" value="0.07" />
+
+    <!-- link2 properties -->
+    <xacro:property name="link2_width" value="0.05" />
+    <xacro:property name="link2_len" value="0.1" />
+
+    <!-- link3 properties -->
+    <xacro:property name="link3_width" value="0.0375" />
+    <xacro:property name="link3_len" value="0.135" />
+
+    <!-- link4 properties -->
+    <xacro:property name="link4_width" value="0.0375" />
+    <xacro:property name="link4_len" value="0.08" />
+
+    <!-- link5 properties -->
+    <xacro:property name="link5_width" value="0.0375" />
+    <xacro:property name="link5_len" value="0.075" />
+
+    <!-- link6 properties -->
+    <xacro:property name="link6_width" value="0.0375" />
+    <xacro:property name="link6_len" value="0.095" />
+
+    <!-- palm properties -->
+    <xacro:property name="palm_len" value="0.07" />
+    <xacro:property name="palm_width" value="0.015" />
+    <xacro:property name="palm_height" value="0.08" />
+
+    <!-- thumb properties -->
+    <xacro:property name="hand_size" value="0.015" />
+    <xacro:property name="thumb_height" value="0.03" />
+
+    <!-- index_finger properties -->    
+    <xacro:property name="index_finger_height" value="0.05" />
+
+    <!-- middle_finger properties -->    
+    <xacro:property name="middle_finger_height" value="0.07" />
+
+    <!-- third_finger properties -->
+    <xacro:property name="third_finger_height" value="0.065" />
+
+    <!-- little_finger properties -->
+    <xacro:property name="little_finger_height" value="0.045" />
+
+    <!-- Inertial matrix -->
+    <xacro:macro name="inertial_matrix" params="mass">
+        <inertial>
+            <mass value="${mass}" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="1.0" />
+        </inertial>
+    </xacro:macro>
+
+    <!-- ///////////////////////////////////////   bottom_joint   ////////////////////////////////////////// -->
+    
+    <link name="bottom_link">
+        <visual>
+              <origin xyz=" 0 0 -0.025"  rpy="0 0 0"/>
+                  <geometry>
+                       <box size="0.5 0.5 0.05" />
+                  </geometry>
+              <material name="Brown" />
+        </visual>
+        <collision>
+            <origin xyz=" 0 0 -0.025"  rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.05" />
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="500"/>
+    </link>  
+    <joint name="bottom_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="base_link"/>
+        <child link="bottom_link"/>
+    </joint>
+    <!-- /////////////////////////////////////   BASE LINK    ////////////////////////////////////////////// -->
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0.325" rpy="0 0 0" />
+            <geometry>
+                <box size="0.05 0.05 0.65" />
+            </geometry>
+            <material name="White" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.325" rpy="0 0 0" />
+            <geometry>
+                <box size="0.05 0.05 0.65" />
+            </geometry>
+        </collision>
+    <xacro:inertial_matrix mass="100"/>
+    </link> 
+    <joint name="kinetic_camera_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="kinetic_camera"/>
+        <origin xyz="0 0 0.65" rpy="0 0 0" />
+    </joint>
+
+    <!-- /////////////////////////////////////  KINETIC_CAMER  ////////////////////////////////////////////// -->
+    <link name="kinetic_camera" >
+        <visual>
+            <origin xyz="0 0 0.025" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/kinect.dae"/>
+            </geometry>
+            <material name="Black" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.025" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/kinect.dae"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="100"/>
+    </link>
+
+    <joint name="right_joint1" type="fixed">
+        <parent link="base_link"/>
+        <child link="right_link1"/>
+        <origin
+      xyz="-0.095 0 0.55"
+      rpy="1.5708 0 0" />
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_LINK1  ////////////////////////////////////////////// -->
+    <link name="right_link1" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R0L.STL"/>
+            </geometry>
+            <material name="Blue" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R0L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link>
+    <joint name="left_joint1" type="fixed">
+        <parent link="base_link"/>
+        <child link="left_link1"/>
+        <origin
+      xyz="0.095 0 0.55"
+      rpy="1.5708 0 3.1416" />
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_LINK1  ////////////////////////////////////////////// -->
+    <link name="left_link1" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L0L.STL"/>
+                
+            </geometry>
+            <material name="Blue" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L0L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link>
+    <joint name="right_joint2" type="revolute">
+        <parent link="right_link1"/>
+        <child link="right_link2"/>
+        <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+        <axis xyz="-1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_LINK2  ////////////////////////////////////////////// -->
+    <link name="right_link2" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R1L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R1L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link>
+    <joint name="left_joint2" type="revolute">
+        <parent link="left_link1"/>
+        <child link="left_link2"/>
+         <origin
+      xyz="-0.07 0 0"
+      rpy="0 0 0" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_LINK2  ////////////////////////////////////////////// -->
+    <link name="left_link2" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L1L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L1L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link>
+    <joint name="right_joint3" type="revolute">
+        <parent link="right_link2"/>
+        <child link="right_link3"/>
+        <origin
+      xyz="-0.07 0 0"
+      rpy="1.5707963267949 0 1.5707963267949" />
+        <axis xyz="0 -1 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_LINK3  ////////////////////////////////////////////// -->
+    <link name="right_link3" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R2L.STL"/>
+            </geometry>
+            <material name="Black" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R2L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="left_joint3" type="revolute">
+        <parent link="left_link2"/>
+        <child link="left_link3"/>
+        <origin
+      xyz="0 0 0"
+      rpy="1.5707963267949 -1.22460635382238E-16 1.5707963267949" />
+        <axis xyz="0 -1 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/6}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_LINK3  ////////////////////////////////////////////// -->
+    <link name="left_link3" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+               <mesh filename="package://doublearm_description/meshes/L2L.STL"/>
+            </geometry>
+            <material name="Black" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+               <mesh filename="package://doublearm_description/meshes/L2L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="right_joint4" type="revolute">
+        <parent link="right_link3"/>
+        <child link="right_link4"/>
+        <origin
+      xyz="-0.0841 0 0"
+      rpy="0 0 0" />
+        <axis xyz="-1 0 0" />
+        <limit effort="300" velocity="1" lower="-${M_PI/2}" upper="${M_PI/3}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_LINK4  ////////////////////////////////////////////// -->
+    <link name="right_link4" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R3L.STL"/>
+            </geometry>
+            <material name="Blue" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R3L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link>
+    <joint name="left_joint4" type="revolute">
+        <parent link="left_link3"/>
+        <child link="left_link4"/>
+        <origin
+      xyz="-0.0841 0 0"
+      rpy="3.14159265358979 0 0" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="-${M_PI/2}" upper="${M_PI/3}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_LINK4  ////////////////////////////////////////////// -->
+    <link name="left_link4" >
+        <visual>
+           <origin
+        xyz="-0.0859 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L3L.STL"/>
+            </geometry>
+            <material name="Blue" />
+        </visual>
+        <collision>
+            <origin
+        xyz="-0.0859 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L3L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="right_joint5" type="revolute">
+        <parent link="right_link4"/>
+        <child link="right_link5"/>
+        <origin
+      xyz="-0.0859 0 0"
+      rpy="0 0 0" />
+        <axis xyz="0 0 -1" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_LINK5  ////////////////////////////////////////////// -->
+    <link name="right_link5" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R4L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R4L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link>
+    <joint name="left_joint5" type="revolute">
+        <parent link="left_link4"/>
+        <child link="left_link5"/>
+        <origin
+      xyz="-0.0859000000000001 0 0"
+      rpy="0 0 0" />
+        <axis xyz="0 0 -1" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_LINK5  ////////////////////////////////////////////// -->
+    <link name="left_link5" >
+    <visual>        
+    <origin
+        xyz="-0.0746 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L4L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="-0.0746 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L4L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link>  
+    <joint name="right_joint6" type="revolute">
+        <parent link="right_link5"/>
+        <child link="right_link6"/>
+        <origin
+      xyz="-0.0691 0 0"
+      rpy="0 0 0" />
+        <axis xyz="-1 0 0" />
+        <limit effort="300" velocity="1" lower="-${M_PI/2}" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_LINK6  ////////////////////////////////////////////// -->
+    <link name="right_link6" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R5L.STL"/>
+            </geometry>
+            <material name="Black" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R5L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="left_joint6" type="revolute">
+        <parent link="left_link5"/>
+        <child link="left_link6"/>
+        <origin
+      xyz="-0.0691 0 0"
+      rpy="0 0 0" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="-${M_PI/2}" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_LINK6  ////////////////////////////////////////////// -->
+    <link name="left_link6" >
+        <visual>
+            <origin
+        xyz="-0.1159 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L5L.STL"/>
+            </geometry>
+            <material name="Black" />
+        </visual>
+        <collision>
+            <origin
+        xyz="-0.1159 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L5L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="left_palm_joint" type="revolute">
+        <parent link="left_link6"/>
+        <child link="left_palm"/>
+        <origin
+      xyz="-0.1009 0 0"
+      rpy="1.62315620435473 -4.33086524435639E-17 -1.5707963267949" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/3}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_PALM  ////////////////////////////////////////////// -->
+    <link name="left_palm" >
+        <visual>
+            <origin
+        xyz="0.004 0.0135 0.0759"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L6L.STL"/>
+            </geometry>
+            <material name="Blue" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0.004 0.0135 0.0759"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/L6L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="right_palm_joint" type="revolute">
+        <parent link="right_link6"/>
+        <child link="right_palm"/>
+        <origin
+      xyz="-0.1009 0 0"
+      rpy="-1.62315620435473 -6.10626046476459E-17 1.5707963267949" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/3}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_PALM  ////////////////////////////////////////////// -->
+    <link name="right_palm" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R6L.STL"/>
+            </geometry>
+            <material name="Blue" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/R6L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="left_thumb_joint" type="revolute">
+        <parent link="left_palm"/>
+        <child link="left_thumb"/>
+        <origin
+      xyz="-0.0269333862591261 -0.0155287625236462 0.032"
+      rpy="-0.826340517052855 -0.645970654364895 2.23375864018345" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_THUMB  ////////////////////////////////////////////// -->
+    <link name="left_thumb" >
+        <visual>
+            <origin
+        xyz="0 0.005 -0.008"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/LH1L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0.005 -0.008"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/LH1L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link>  
+    <joint name="right_thumb_joint" type="revolute">
+        <parent link="right_palm"/>
+        <child link="right_thumb"/>
+        <origin
+      xyz="0.0188477333449656 0 0"
+      rpy="-0.987368253263787 0.726775054319698 -2.28844567406845" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_THUMB  ////////////////////////////////////////////// -->
+    <link name="right_thumb" >
+        <visual>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/RH1L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/RH2L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="left_index_finger_joint" type="revolute">
+        <parent link="left_palm"/>
+        <child link="left_index_finger"/>
+        <origin
+      xyz="-0.0240070181232581 -0.0108375364161491 0.0626196280892251"
+      rpy="-0.104862416367964 -0.0520727844172435 0.00547804983408143" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_INDEX_FINGER  ////////////////////////////////////////////// -->
+    <link name="left_index_finger" >
+        <visual>
+            <origin
+        xyz="0.0046 0.01 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/LH2L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0.0046 0.01 0"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/LH2L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="right_index_finger_joint" type="revolute">
+        <parent link="right_palm"/>
+        <child link="right_index_finger"/>
+        <origin
+      xyz="0.0167669539962875 0 0.0622"
+      rpy="-2.77241817040731E-15 0.0523598775598255 -8.43360661129554E-17" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_INDEX_FINGER  ////////////////////////////////////////////// -->
+    <link name="right_index_finger" >
+        <visual>
+            <origin
+        xyz="0 0 -0.0622"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/RH2L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 -0.0622"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/RH2L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link>
+    <joint name="left_middle_finger_joint" type="revolute">
+        <parent link="left_palm"/>
+        <child link="left_middle_finger"/>
+        <origin
+      xyz="-0.00825000000000003 -0.0105269395609912 0.0626644964109168"
+      rpy="-0.10471975511966 9.06639895690886E-18 4.28929370639945E-17" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_MIDDLE_FINGER  ////////////////////////////////////////////// -->
+    <link name="left_middle_finger" >
+        <visual>
+            <origin
+        xyz="0.004 0.01 0.005"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/LH3L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0.004 0.01 0.005"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/LH3L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="right_middle_finger_joint" type="revolute">
+        <parent link="right_palm"/>
+        <child link="right_middle_finger"/>
+        <origin
+      xyz="-0.00273149671020095 -0.006 0.0622"
+      rpy="0.10471975511966 4.53319947845443E-18 1.80158916870494E-17" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_MIDDLE_FINGER  ////////////////////////////////////////////// -->
+    <link name="right_middle_finger" >
+        <visual>
+            <origin
+        xyz="0 0 -0.0622"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/RH3L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 -0.0622"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/RH3L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="left_third_finger_joint" type="revolute">
+        <parent link="left_palm"/>
+        <child link="left_third_finger"/>
+        <origin
+      xyz="0.00750701812325806 -0.0108375364161491 0.0626196280892251"
+      rpy="-0.104862416367961 0.0520727844172477 -0.00547804983408163" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_THIRD_FINGER  ////////////////////////////////////////////// -->
+    <link name="left_third_finger" >
+        <visual>
+            <origin
+        xyz="0.003 0.01 0.002"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/LH4L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0.003 0.01 0.002"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/LH4L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="right_third_finger_joint" type="revolute">
+        <parent link="right_palm"/>
+        <child link="right_third_finger"/>
+        <origin
+      xyz="-0.00503149671020095 0 0.0622"
+      rpy="0 -0.0523598775598283 -2.52745261418723E-17" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_THIRD_FINGER  ////////////////////////////////////////////// -->
+    <link name="right_third_finger" >
+        <visual>
+            <origin
+        xyz="0 0 -0.0622"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/RH4L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 -0.0622"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/RH4L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link>  
+    <joint name="left_little_finger_joint" type="revolute">
+        <parent link="left_palm"/>
+        <child link="left_little_finger"/>
+        <origin
+      xyz="0.0230869302500521 -0.0112339079064419 0.0623908509071342"
+      rpy="-0.105292338455178 0.104144000510506 -0.0109859422060591" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  LEFT_LITTLE_FINGER  ////////////////////////////////////////////// -->
+    <link name="left_little_finger" >
+        <visual>
+            <origin
+        xyz="0.0015 0.01 -0.001"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/LH5L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0.0015 0.01 -0.001"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/LH5L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+    <joint name="right_little_finger_joint" type="revolute">
+        <parent link="right_palm"/>
+        <child link="right_little_finger"/>
+        <origin
+      xyz="-0.0248766465086321 0 0.0622"
+      rpy="0 -0.104719755119661 6.20185430776807E-17" />
+        <axis xyz="1 0 0" />
+        <limit effort="300" velocity="1" lower="0" upper="${M_PI/2}"/>
+        <dynamics damping="50" friction="1"/>
+    </joint>
+
+    <!-- /////////////////////////////////////  RIGHT_LITTLE_FINGER  ////////////////////////////////////////////// -->
+    <link name="right_little_finger" >
+        <visual>
+            <origin
+        xyz="0 0 -0.0622"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/RH5L.STL"/>
+            </geometry>
+            <material name="Red" />
+        </visual>
+        <collision>
+            <origin
+        xyz="0 0 -0.0622"
+        rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://doublearm_description/meshes/RH5L.STL"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_matrix mass="1"/>
+    </link> 
+
+    <!-- /////////////////////////////////   Gazebo   ////////////////////////////////////// -->
+    <gazebo reference="bottom_link">
+        <material>Gazebo/Black</material>
+    </gazebo>
+    <gazebo reference="base_link">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="kinetic_camera">
+        <material>Gazebo/Black</material>
+    </gazebo>
+    <gazebo reference="left_link1">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="left_link2">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="left_link3">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="left_link4">
+        <material>Gazebo/Black</material>
+    </gazebo>
+    <gazebo reference="left_link5">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="left_link6">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="left_palm">
+        <material>Gazebo/Black</material>
+    </gazebo>
+    <gazebo reference="left_thumb">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="left_index_finger">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="left_middle_finger">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="left_third_finger">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="left_little_finger">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="right_link1">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="right_link2">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="right_link3">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="right_link4">
+        <material>Gazebo/Black</material>
+    </gazebo>
+    <gazebo reference="right_link5">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="right_link6">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="right_palm">
+        <material>Gazebo/Black</material>
+    </gazebo>
+    <gazebo reference="right_thumb">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="right_index_finger">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="right_middle_finger">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="right_third_finger">
+        <material>Gazebo/Red</material>
+    </gazebo>
+    <gazebo reference="right_little_finger">
+        <material>Gazebo/Red</material>
+    </gazebo>
+
+    <gazebo reference="kinetic_camera">
+            <sensor type="camera" name="camera_node">
+                <update_rate>30.0</update_rate>
+                <camera name="head">
+                    <horizontal_fov>1.3962634</horizontal_fov>
+                    <image>
+                        <width>1280</width>
+                        <height>720</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.02</near>
+                        <far>300</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                </camera>
+                <plugin name="gazebo_camera" filename="libgazebo_ros_camera.so">
+                    <alwaysOn>true</alwaysOn>
+                    <updateRate>0.0</updateRate>
+                    <cameraName>/camera</cameraName>
+                    <imageTopicName>image_raw</imageTopicName>
+                    <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                    <frameName>camera_link</frameName>
+                    <hackBaseline>0.07</hackBaseline>
+                    <distortionK1>0.0</distortionK1>
+                    <distortionK2>0.0</distortionK2>
+                    <distortionK3>0.0</distortionK3>
+                    <distortionT1>0.0</distortionT1>
+                    <distortionT2>0.0</distortionT2>
+                </plugin>
+            </sensor>
+        </gazebo>
+    <!-- Transmissions for ROS Control -->
+    <xacro:macro name="transmission_block" params="joint_name">
+        <transmission name="tran1">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${joint_name}">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor1">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro:macro>
+       
+    <xacro:transmission_block joint_name="left_joint2"/>
+    <xacro:transmission_block joint_name="left_joint3"/>
+    <xacro:transmission_block joint_name="left_joint4"/>
+    <xacro:transmission_block joint_name="left_joint5"/>
+    <xacro:transmission_block joint_name="left_joint6"/>
+    <xacro:transmission_block joint_name="left_palm_joint"/>
+    <xacro:transmission_block joint_name="left_thumb_joint"/>
+    <xacro:transmission_block joint_name="left_index_finger_joint"/>
+    <xacro:transmission_block joint_name="left_middle_finger_joint"/>
+    <xacro:transmission_block joint_name="left_third_finger_joint"/>
+    <xacro:transmission_block joint_name="left_little_finger_joint"/>
+    <xacro:transmission_block joint_name="right_joint2"/>
+    <xacro:transmission_block joint_name="right_joint3"/>
+    <xacro:transmission_block joint_name="right_joint4"/>
+    <xacro:transmission_block joint_name="right_joint5"/>
+    <xacro:transmission_block joint_name="right_joint6"/>
+    <xacro:transmission_block joint_name="right_palm_joint"/>
+    <xacro:transmission_block joint_name="right_thumb_joint"/>
+    <xacro:transmission_block joint_name="right_index_finger_joint"/>
+    <xacro:transmission_block joint_name="right_middle_finger_joint"/>
+    <xacro:transmission_block joint_name="right_third_finger_joint"/>
+    <xacro:transmission_block joint_name="right_little_finger_joint"/>
+
+    <!-- ros_control plugin -->
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/doublearm</robotNamespace>
+        </plugin>
+    </gazebo>
+</robot>
